@@ -3,9 +3,14 @@ const bcrypt = require('bcrypt')
 const _ = require('underscore')
 const Usuario = require('../models/usuario')
 
+//Esta forma de require solo nos devuelve el verificaToken y no toda la librería
+//No hay que mandar llamar el metodo ahora
+const { verificaToken, verificaAdmin_Role } = require('../middlewares/autenticacion')
+
 const app = express()
 
-app.get('/usuario', (req, res) => {
+//verificaToken manda a llamar el metodo dentro del middleware autenticacion
+app.get('/usuario', verificaToken, (req, res) => {
 
     let desde = Number(req.query.desde) || 0
     let limite = Number(req.query.limite) || 5
@@ -44,7 +49,7 @@ app.get('/usuario', (req, res) => {
 
 })
 
-app.post('/usuario', (req, res) => {
+app.post('/usuario', [verificaToken, verificaAdmin_Role], (req, res) => {
     let body = req.body
 
     let usuario = new Usuario({
@@ -89,7 +94,7 @@ app.post('/usuario', (req, res) => {
 
 })
 
-app.put('/usuario/:id', (req, res) => {
+app.put('/usuario/:id', [verificaToken, verificaAdmin_Role], (req, res) => {
 
     let id = req.params.id
         //let body = req.body
@@ -115,7 +120,7 @@ app.put('/usuario/:id', (req, res) => {
 
 })
 
-app.delete('/usuario/:id', function(req, res) {
+app.delete('/usuario/:id', [verificaToken, verificaAdmin_Role], function(req, res) {
 
     let id = req.params.id
 

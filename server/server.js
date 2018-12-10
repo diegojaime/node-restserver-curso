@@ -1,5 +1,4 @@
 require('./config/config')
-require('./routes/usuario')
 
 const express = require('express')
 const mongoose = require('mongoose')
@@ -9,7 +8,9 @@ const bodyparser = require('body-parser')
 //Midlewares cada petición que recibimos para por aquí
 // parse application/x-www-form-urlencoded
 app.use(bodyparser.urlencoded({ extended: false }))
-app.use(require('./routes/usuario'))
+
+//Configuración global de rutas
+app.use(require('./routes/index'))
 
 // parse application/json
 app.use(bodyparser.json())
