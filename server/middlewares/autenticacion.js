@@ -1,5 +1,7 @@
 const jwt = require('jsonwebtoken')
 
+const Categoria = require('../models/categoria')
+
 //=========================
 //   Verificar token
 //=========================
@@ -47,7 +49,28 @@ let verificaAdmin_Role = (req, res, next) => {
     }
 }
 
+let verificaCategoria = (req, res, next) => {
+
+    Categoria.findOne({ estado: true, categoria: req.body.categoria }, (err, categoriaDB) => {
+        if (err) {
+            return res.status(500).json({
+                ok: false,
+                err: {
+                    mensaje: 'Categoria no valida'
+                }
+            })
+        }
+
+        res.json({
+            ok: true,
+            categoria: categoriaDB
+        })
+        next()
+    })
+}
+
 module.exports = {
     verificaToken,
-    verificaAdmin_Role
+    verificaAdmin_Role,
+    verificaCategoria
 }
