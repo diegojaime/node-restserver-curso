@@ -67,7 +67,7 @@ app.put('/upload/:tipo/:id', (req, res) => {
             })
         }
 
-        if (tipo === 'usuario') {
+        if (tipo === 'usuarios') {
             //Actualizamos imagen del usuario
             imagenUsuario(id, res, nombreArchivo)
         } else {
